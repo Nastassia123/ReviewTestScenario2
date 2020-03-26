@@ -7,17 +7,19 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
+import javax.smartcardio.Card;
+
 
 public class MainPage extends BasePageClass {
 
 
     private String url = "https://stage.4frag.ru/";
 
-   private By buyProductLocator = By.linkText("Купить");
+   private By buyProductLocator = By.xpath("//a[text()='Купить']");
 
-    private By closeButtonWindowLocator = By.className("close");
+    private By closeButtonWindowLocator = By.xpath("//button[contains(@class, 'Test')]");
 
-    private By cardButtonLocator = By.xpath("span[text() = 'Корзина']");
+    private By cardButtonLocator = By.xpath("//span[text() = 'Корзина']");
 
 
     public MainPage openHomePage() {
@@ -33,18 +35,50 @@ public class MainPage extends BasePageClass {
         return this;
     }
 
-    public MainPage closeAddToCardWindow() {
-        WebElement closeButton = new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.presenceOfElementLocated(closeButtonWindowLocator));
-        closeButton.click();
+    public MainPage closePopUpWindow() {
+//gmail.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+      /*  WebElement closeWindowButton = new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.visibilityOfElementLocated(closeButtonWindowLocator));
+        closeWindowButton.click();*/
+
+
+
+
+     /* for (String winHandle: driver.getWindowHandles()) {
+          driver.switchTo().window(winHandle);
+          WebElement closeWindowButton = new WebDriverWait(driver, 10)
+                  .until(ExpectedConditions.presenceOfElementLocated(closeButtonWindowLocator));
+          closeWindowButton.click();
+          */
+        for (String winHandle: driver.getWindowHandles()) {
+            driver.switchTo().window(winHandle);}
+      driver.findElement(cardButtonLocator).click();
+
+
         return this;
     }
+    public CardPage goToTheCardPage() {
 
-    public CardPage verifyProductInTheCard(){
+
+
+/*        for (String winHandle: driver.getWindowHandles()) {
+            driver.switchTo().window(winHandle);
+        }
+*/
+
+        WebElement closeButton = new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.presenceOfElementLocated(cardButtonLocator));
+        closeButton.click();
+        return new CardPage();
+    }
+
+
+ /*   public CardPage verifyProductInTheCard(){
         WebElement cardButton = new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.presenceOfElementLocated(cardButtonLocator));
         cardButton.click();
       return new CardPage();
-    }
+    }*/
 }
 
